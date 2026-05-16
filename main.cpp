@@ -10,6 +10,19 @@ struct Account {
     double balance;
 };
 
+// Function to log transactions
+void logTransaction(int accNo, string type, double amount, double newBalance) {
+    ofstream log("transaction_history.txt", ios::app);
+    if (log.is_open()) {
+        log << "Account: " << accNo
+            << " | " << type
+            << " | Amount: " << amount
+            << " | New Balance: " << newBalance
+            << endl;
+        log.close();
+    }
+}
+
 // Function to create a new account
 void createAccount() {
     Account acc;
@@ -26,6 +39,7 @@ void createAccount() {
         file << acc.accountNumber << " | " << acc.name << " | " << acc.balance << endl;
         file.close();
         cout << "Account created successfully!\n";
+        logTransaction(acc.accountNumber, "Account Created", acc.balance, acc.balance);
     } else {
         cout << "Error opening file.\n";
     }
@@ -50,7 +64,7 @@ void depositMoney(int accNo, double amount) {
     bool found = false;
 
     while (file >> acc.accountNumber) {
-        file.ignore(3, '|'); // skip delimiter
+        file.ignore(3, '|');
         getline(file, acc.name, '|');
         file >> acc.balance;
 
@@ -58,6 +72,7 @@ void depositMoney(int accNo, double amount) {
             acc.balance += amount;
             found = true;
             cout << "Deposited " << amount << " successfully!\n";
+            logTransaction(acc.accountNumber, "Deposit", amount, acc.balance);
         }
         temp << acc.accountNumber << " | " << acc.name << " | " << acc.balance << endl;
     }
@@ -86,6 +101,7 @@ void withdrawMoney(int accNo, double amount) {
             if (acc.balance >= amount) {
                 acc.balance -= amount;
                 cout << "Withdrawn " << amount << " successfully!\n";
+                logTransaction(acc.accountNumber, "Withdrawal", amount, acc.balance);
             } else {
                 cout << "Insufficient balance!\n";
             }
@@ -102,6 +118,17 @@ void withdrawMoney(int accNo, double amount) {
     if (!found) cout << "Account not found!\n";
 }
 
+// Function to view transaction history
+void viewHistory() {
+    ifstream log("transaction_history.txt");
+    string line;
+    cout << "\n--- Transaction History ---\n";
+    while (getline(log, line)) {
+        cout << line << endl;
+    }
+    log.close();
+}
+
 int main() {
     int choice;
     do {
@@ -110,7 +137,8 @@ int main() {
         cout << "2. Display Accounts\n";
         cout << "3. Deposit Money\n";
         cout << "4. Withdraw Money\n";
-        cout << "5. Exit\n";
+        cout << "5. View Transaction History\n";
+        cout << "6. Exit\n";
         cout << "Enter choice: ";
         cin >> choice;
 
@@ -131,10 +159,11 @@ int main() {
                 withdrawMoney(accNo, amount);
                 break;
             }
-            case 5: cout << "Exiting...\n"; break;
+            case 5: viewHistory(); break;
+            case 6: cout << "Exiting...\n"; break;
             default: cout << "Invalid choice!\n";
         }
-    } while (choice != 5);
+    } while (choice != 6);
 
     return 0;
 }
