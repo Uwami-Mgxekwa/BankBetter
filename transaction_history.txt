@@ -1,0 +1,1 @@
+Account: 123 | Account Created | Amount: 6500 | New Balance: 6500

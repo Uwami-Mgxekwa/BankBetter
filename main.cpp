@@ -10,7 +10,6 @@ struct Account {
     double balance;
 };
 
-// Function to log transactions
 void logTransaction(int accNo, string type, double amount, double newBalance) {
     ofstream log("transaction_history.txt", ios::app);
     if (log.is_open()) {
@@ -23,7 +22,6 @@ void logTransaction(int accNo, string type, double amount, double newBalance) {
     }
 }
 
-// Function to create a new account
 void createAccount() {
     Account acc;
     cout << "Enter Account Number: ";
@@ -45,7 +43,6 @@ void createAccount() {
     }
 }
 
-// Function to display all accounts
 void displayAccounts() {
     ifstream file("bank_database.txt");
     string line;
@@ -56,7 +53,6 @@ void displayAccounts() {
     file.close();
 }
 
-// Function to deposit money
 void depositMoney(int accNo, double amount) {
     ifstream file("bank_database.txt");
     ofstream temp("temp.txt");
@@ -85,7 +81,6 @@ void depositMoney(int accNo, double amount) {
     if (!found) cout << "Account not found!\n";
 }
 
-// Function to withdraw money
 void withdrawMoney(int accNo, double amount) {
     ifstream file("bank_database.txt");
     ofstream temp("temp.txt");
@@ -118,7 +113,6 @@ void withdrawMoney(int accNo, double amount) {
     if (!found) cout << "Account not found!\n";
 }
 
-// Function to view transaction history
 void viewHistory() {
     ifstream log("transaction_history.txt");
     string line;

@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1778954151 source:c:\users\zilotech\desktop\bankbetter\main.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<iomanip>
+
